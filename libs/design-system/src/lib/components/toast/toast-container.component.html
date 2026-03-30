@@ -1,0 +1,7 @@
+<div class="ds-toast-container">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div [class]="'ds-toast ds-toast--' + toast.variant" (click)="toastService.dismiss(toast.id)">
+      {{ toast.message }}
+    </div>
+  }
+</div>

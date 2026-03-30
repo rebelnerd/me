@@ -1,0 +1,8 @@
+<div [class]="'ds-alert ds-alert--' + variant()" role="alert">
+  <div class="ds-alert__content">
+    <ng-content />
+  </div>
+  @if (dismissible()) {
+    <button class="ds-alert__close" (click)="dismissed.emit()" aria-label="Dismiss">&times;</button>
+  }
+</div>

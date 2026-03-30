@@ -1,0 +1,33 @@
+.ds-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+
+  &--disabled { opacity: 0.5; cursor: not-allowed; }
+
+  &__input { display: none; }
+
+  &__box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    color: white;
+
+    &--checked {
+      background: var(--color-primary-600);
+      border-color: var(--color-primary-600);
+    }
+  }
+
+  &__label {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+  }
+}

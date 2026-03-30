@@ -1,0 +1,23 @@
+<div class="ds-select" [class.ds-select--error]="error()" [class.ds-select--disabled]="isDisabled()">
+  @if (label()) {
+    <label class="ds-select__label">{{ label() }}</label>
+  }
+  <select
+    class="ds-select__field"
+    [disabled]="isDisabled()"
+    (change)="onSelect($event)"
+    (blur)="onTouched()"
+  >
+    @if (placeholder()) {
+      <option value="" disabled [selected]="!value()">{{ placeholder() }}</option>
+    }
+    @for (option of options(); track option.value) {
+      <option [value]="option.value" [disabled]="option.disabled" [selected]="option.value === value()">
+        {{ option.label }}
+      </option>
+    }
+  </select>
+  @if (error()) {
+    <span class="ds-select__error">{{ error() }}</span>
+  }
+</div>

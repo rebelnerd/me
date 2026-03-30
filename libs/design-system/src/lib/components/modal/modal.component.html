@@ -1,0 +1,16 @@
+@if (open()) {
+  <div class="ds-modal-overlay" (click)="onOverlayClick($event)">
+    <div class="ds-modal" [class]="'ds-modal--' + size()" role="dialog">
+      <div class="ds-modal__header">
+        <h2 class="ds-modal__title">{{ title() }}</h2>
+        <button class="ds-modal__close" (click)="closed.emit()" aria-label="Close">&times;</button>
+      </div>
+      <div class="ds-modal__body">
+        <ng-content />
+      </div>
+      <div class="ds-modal__footer">
+        <ng-content select="[footer]" />
+      </div>
+    </div>
+  </div>
+}

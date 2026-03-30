@@ -1,0 +1,19 @@
+<label class="ds-checkbox" [class.ds-checkbox--disabled]="isDisabled()">
+  <input
+    type="checkbox"
+    [checked]="value()"
+    [disabled]="isDisabled()"
+    (change)="toggle()"
+    class="ds-checkbox__input"
+  />
+  <span class="ds-checkbox__box" [class.ds-checkbox__box--checked]="value()">
+    @if (value()) {
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    }
+  </span>
+  @if (label()) {
+    <span class="ds-checkbox__label">{{ label() }}</span>
+  }
+</label>

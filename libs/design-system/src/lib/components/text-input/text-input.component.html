@@ -1,0 +1,21 @@
+<div class="ds-text-input" [class.ds-text-input--error]="error()" [class.ds-text-input--disabled]="isDisabled()">
+  @if (label()) {
+    <label class="ds-text-input__label" [attr.for]="inputId()">{{ label() }}</label>
+  }
+  <input
+    [id]="inputId()"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [disabled]="isDisabled()"
+    [value]="value()"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+    class="ds-text-input__field"
+  />
+  @if (error()) {
+    <span class="ds-text-input__error">{{ error() }}</span>
+  }
+  @if (hint() && !error()) {
+    <span class="ds-text-input__hint">{{ hint() }}</span>
+  }
+</div>

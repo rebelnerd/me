@@ -1,0 +1,14 @@
+<div class="ds-tabs" role="tablist">
+  @for (tab of tabs(); track tab.id) {
+    <button
+      role="tab"
+      [attr.aria-selected]="tab.id === activeTab()"
+      [disabled]="tab.disabled"
+      class="ds-tabs__tab"
+      [class.ds-tabs__tab--active]="tab.id === activeTab()"
+      (click)="selectTab(tab.id)"
+    >
+      {{ tab.label }}
+    </button>
+  }
+</div>

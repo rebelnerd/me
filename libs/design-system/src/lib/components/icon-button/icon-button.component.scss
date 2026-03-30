@@ -1,0 +1,53 @@
+:host {
+  display: inline-block;
+}
+
+.ds-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Shapes
+  &--circle { border-radius: var(--radius-full); }
+  &--square { border-radius: var(--radius-md); }
+
+  // Sizes
+  &--xs { width: 24px; height: 24px; }
+  &--sm { width: 32px; height: 32px; }
+  &--md { width: 40px; height: 40px; }
+  &--lg { width: 48px; height: 48px; }
+
+  // Variants
+  &--primary {
+    background: var(--color-primary-600);
+    color: var(--color-text-inverse);
+    &:hover:not(:disabled) { background: var(--color-primary-700); }
+  }
+
+  &--outline {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-default);
+    &:hover:not(:disabled) { background: var(--color-bg-secondary); }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    &:hover:not(:disabled) { background: var(--color-bg-tertiary); }
+  }
+
+  &--error {
+    background: var(--color-error-500);
+    color: var(--color-text-inverse);
+    &:hover:not(:disabled) { background: var(--color-error-600); }
+  }
+}

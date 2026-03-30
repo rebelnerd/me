@@ -1,0 +1,52 @@
+@use 'tailwindcss';
+
+/* Design System Tokens */
+@import '../../../libs/design-system/src/lib/tokens/index.css';
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family-sans);
+  font-size: 16px;
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-primary-600);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Typography Utilities */
+.h1 { font-family: var(--font-family-heading); font-size: var(--font-size-4xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+.h2 { font-family: var(--font-family-heading); font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+.h3 { font-family: var(--font-family-heading); font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold); line-height: var(--line-height-tight); }
+.h4 { font-family: var(--font-family-heading); font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); line-height: var(--line-height-tight); }
+
+.body-lg { font-size: var(--font-size-lg); }
+.body-md { font-size: var(--font-size-md); }
+.body-sm { font-size: var(--font-size-sm); }
+.body-xs { font-size: var(--font-size-xs); }
+
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-brand { color: var(--color-text-brand); }

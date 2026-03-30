@@ -1,0 +1,41 @@
+.ds-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  cursor: pointer;
+
+  &--disabled { opacity: 0.5; cursor: not-allowed; }
+
+  &__track {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--color-neutral-300);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: inherit;
+    transition: background var(--transition-fast);
+    padding: 0;
+
+    &--on { background: var(--color-primary-600); }
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform var(--transition-fast);
+
+    .ds-toggle__track--on & { transform: translateX(20px); }
+  }
+
+  &__label {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+  }
+}

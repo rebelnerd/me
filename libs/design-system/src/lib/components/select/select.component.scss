@@ -1,0 +1,38 @@
+.ds-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+
+  &__label {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+
+  &__field {
+    height: 40px;
+    padding: var(--spacing-2) var(--spacing-3);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    cursor: pointer;
+    outline: none;
+
+    &:focus {
+      border-color: var(--color-primary-500);
+      box-shadow: 0 0 0 3px var(--color-primary-100);
+    }
+
+    &:disabled {
+      background: var(--color-bg-secondary);
+      cursor: not-allowed;
+    }
+  }
+
+  &--error .ds-select__field { border-color: var(--color-error-500); }
+  &__error { font-size: var(--font-size-sm); color: var(--color-error-500); }
+}

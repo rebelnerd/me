@@ -1,0 +1,13 @@
+<button
+  [type]="type()"
+  [disabled]="disabled()"
+  [class]="'ds-btn ds-btn--' + variant() + ' ds-btn--' + size()"
+  [class.ds-btn--full-width]="fullWidth()"
+  [class.ds-btn--loading]="loading()"
+  (click)="clicked.emit()"
+>
+  @if (loading()) {
+    <span class="ds-btn__spinner"></span>
+  }
+  <ng-content />
+</button>

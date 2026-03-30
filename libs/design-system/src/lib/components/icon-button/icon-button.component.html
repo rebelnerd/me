@@ -1,0 +1,9 @@
+<button
+  [type]="'button'"
+  [disabled]="disabled()"
+  [class]="'ds-icon-btn ds-icon-btn--' + variant() + ' ds-icon-btn--' + size() + ' ds-icon-btn--' + shape()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="clicked.emit()"
+>
+  <lucide-icon [img]="icon()" [size]="iconSize()"></lucide-icon>
+</button>

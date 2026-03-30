@@ -1,0 +1,15 @@
+<label class="ds-toggle" [class.ds-toggle--disabled]="isDisabled()">
+  <button
+    role="switch"
+    [attr.aria-checked]="value()"
+    [disabled]="isDisabled()"
+    class="ds-toggle__track"
+    [class.ds-toggle__track--on]="value()"
+    (click)="toggle()"
+  >
+    <span class="ds-toggle__thumb"></span>
+  </button>
+  @if (label()) {
+    <span class="ds-toggle__label">{{ label() }}</span>
+  }
+</label>
