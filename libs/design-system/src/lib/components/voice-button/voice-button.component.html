@@ -1,0 +1,14 @@
+<button
+  type="button"
+  class="voice-btn"
+  [class.voice-btn--recording]="recording()"
+  [disabled]="disabled()"
+  (click)="clicked.emit()"
+  [attr.aria-label]="recording() ? 'Stop recording' : 'Start recording'"
+>
+  @if (recording()) {
+    <span class="voice-btn__ring voice-btn__ring--1"></span>
+    <span class="voice-btn__ring voice-btn__ring--2"></span>
+  }
+  <lucide-icon [img]="micIcon" [size]="24"></lucide-icon>
+</button>

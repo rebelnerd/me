@@ -1,26 +1,28 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { Action, Store } from '@ngrx/store';
+import { of, EMPTY } from 'rxjs';
+import { catchError, exhaustMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { AuthActions } from './auth.actions';
+import { selectCurrentUser } from './auth.selectors';
 import { AuthApiService } from './auth.service';
 
 @Injectable()
 export class AuthEffects implements OnInitEffects {
-  constructor(
-    private actions$: Actions,
-    private authService: AuthApiService,
-    private router: Router,
-  ) {}
+  private actions$ = inject(Actions);
+  private authService = inject(AuthApiService);
+  private router = inject(Router);
+  private store = inject(Store);
 
   ngrxOnInitEffects(): Action {
     const token = localStorage.getItem('authToken');
     if (token) {
       return AuthActions.getMe();
     }
-    return AuthActions.logoutSuccess();
+    // No token in localStorage — try refreshing via httpOnly cookie
+    // (handles "remember me" sessions where localStorage was cleared)
+    return AuthActions.refreshToken();
   }
 
   login$ = createEffect(() =>
@@ -112,7 +114,24 @@ export class AuthEffects implements OnInitEffects {
       exhaustMap(() =>
         this.authService.getMe().pipe(
           map((user) => AuthActions.getMeSuccess({ user })),
-          catchError((error) => of(AuthActions.getMeFailure({ error: error.message }))),
+          catchError(() =>
+            // Access token expired — try refreshing via httpOnly cookie
+            this.authService.refreshToken().pipe(
+              switchMap((tokens) => {
+                localStorage.setItem('authToken', tokens.accessToken);
+                return this.authService.getMe().pipe(
+                  map((user) =>
+                    AuthActions.getMeSuccess({
+                      user,
+                      accessToken: tokens.accessToken,
+                      xsrfToken: tokens.xsrfToken,
+                    }),
+                  ),
+                );
+              }),
+              catchError((error) => of(AuthActions.getMeFailure({ error: error.message }))),
+            ),
+          ),
         ),
       ),
     ),
@@ -130,6 +149,20 @@ export class AuthEffects implements OnInitEffects {
           catchError(() => of(AuthActions.refreshTokenFailure())),
         ),
       ),
+    ),
+  );
+
+  // After a successful token refresh, load the user if not already loaded
+  loadUserAfterRefresh$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.refreshTokenSuccess),
+      withLatestFrom(this.store.select(selectCurrentUser)),
+      switchMap(([, user]) => {
+        if (!user) {
+          return of(AuthActions.getMe());
+        }
+        return EMPTY;
+      }),
     ),
   );
 }

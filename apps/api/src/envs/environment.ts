@@ -8,8 +8,8 @@ export const environment: IBackendConfig = {
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT, 10) || 3306,
     username: process.env.DB_USERNAME || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_DATABASE || 'app_dev',
+    password: process.env.DB_PASSWORD || 'redengine',
+    database: process.env.DB_DATABASE || 'me_dev',
     synchronize: process.env.DB_SYNCHRONIZE === 'true' || true,
   },
   jwt: {

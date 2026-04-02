@@ -1,0 +1,58 @@
+<div class="auth-page">
+  <!-- Floating ambient orbs -->
+  <div class="auth-page__orb auth-page__orb--1"></div>
+  <div class="auth-page__orb auth-page__orb--2"></div>
+  <div class="auth-page__orb auth-page__orb--3"></div>
+
+  <div class="auth-card">
+    <div class="auth-card__brand">
+      <span class="auth-card__logo">m</span>
+    </div>
+
+    <h1 class="auth-card__title">Welcome back</h1>
+    <p class="auth-card__subtitle">Sign in to continue your practice</p>
+
+    @if (error()) {
+      <div class="auth-error">{{ error() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <ds-text-input
+        label="Email"
+        type="email"
+        placeholder="you@example.com"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        name="email"
+      />
+      <ds-text-input
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        [ngModel]="password()"
+        (ngModelChange)="password.set($event)"
+        name="password"
+      />
+      <div class="auth-form__remember">
+        <ds-checkbox
+          label="Remember me"
+          [ngModel]="rememberMe()"
+          (ngModelChange)="rememberMe.set($event)"
+          name="rememberMe"
+        />
+      </div>
+      <ds-button
+        type="submit"
+        [fullWidth]="true"
+        [loading]="loading()"
+        [disabled]="!email() || !password()"
+      >
+        Sign In
+      </ds-button>
+    </form>
+
+    <p class="auth-footer">
+      New here? <a routerLink="/auth/signup">Create an account</a>
+    </p>
+  </div>
+</div>

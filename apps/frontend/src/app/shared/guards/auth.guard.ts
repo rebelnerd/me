@@ -1,16 +1,21 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs/operators';
-import { selectIsAuthenticated } from '../../store/auth/auth.selectors';
+import { combineLatest } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
+import { selectAuthInitialized, selectIsAuthenticated } from '../../store/auth/auth.selectors';
 
 export const authGuard: CanActivateFn = () => {
   const store = inject(Store);
   const router = inject(Router);
 
-  return store.select(selectIsAuthenticated).pipe(
+  return combineLatest([
+    store.select(selectAuthInitialized),
+    store.select(selectIsAuthenticated),
+  ]).pipe(
+    filter(([initialized]) => initialized),
     take(1),
-    map((isAuthenticated) => {
+    map(([, isAuthenticated]) => {
       if (!isAuthenticated) {
         return router.createUrlTree(['/auth/login']);
       }
@@ -23,9 +28,13 @@ export const guestGuard: CanActivateFn = () => {
   const store = inject(Store);
   const router = inject(Router);
 
-  return store.select(selectIsAuthenticated).pipe(
+  return combineLatest([
+    store.select(selectAuthInitialized),
+    store.select(selectIsAuthenticated),
+  ]).pipe(
+    filter(([initialized]) => initialized),
     take(1),
-    map((isAuthenticated) => {
+    map(([, isAuthenticated]) => {
       if (isAuthenticated) {
         return router.createUrlTree(['/']);
       }

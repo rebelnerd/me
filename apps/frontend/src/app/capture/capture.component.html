@@ -1,0 +1,125 @@
+<div class="capture">
+  <div class="capture__content">
+    <h2 class="capture__heading">What needs doing?</h2>
+
+    <div class="capture__input-wrap">
+      <input
+        #taskInput
+        type="text"
+        class="capture__input"
+        placeholder="Type or speak..."
+        [value]="taskTitle()"
+        (input)="taskTitle.set($any($event.target).value)"
+        (keydown)="onKeydown($event)"
+        autocomplete="off"
+      />
+    </div>
+
+    @if (taskTitle()) {
+      <button class="capture__expand-toggle" (click)="toggleExpand()">
+        <lucide-icon [img]="expanded() ? collapseIcon : expandIcon" [size]="16"></lucide-icon>
+        <span>{{ expanded() ? 'Less' : 'More details' }}</span>
+      </button>
+    }
+
+    @if (expanded()) {
+      <div class="capture__extras">
+        <!-- Description -->
+        <div class="capture__field">
+          <label class="capture__field-label">Description</label>
+          <textarea
+            class="capture__textarea"
+            placeholder="What's this about?"
+            rows="2"
+            [value]="description()"
+            (input)="description.set($any($event.target).value)"
+          ></textarea>
+        </div>
+
+        <!-- Notes -->
+        <div class="capture__field">
+          <label class="capture__field-label">Notes</label>
+          <textarea
+            class="capture__textarea"
+            placeholder="Any extra notes..."
+            rows="2"
+            [value]="notes()"
+            (input)="notes.set($any($event.target).value)"
+          ></textarea>
+        </div>
+
+        <!-- Priority -->
+        <div class="capture__field">
+          <label class="capture__field-label">Priority</label>
+          <div class="capture__priority-pills">
+            @for (p of priorities; track p.value) {
+              <button
+                class="capture__pill"
+                [class.capture__pill--active]="priority() === p.value"
+                (click)="priority.set(p.value)"
+              >
+                @if (p.color) {
+                  <span class="capture__pill-dot" [style.background]="p.color"></span>
+                }
+                {{ p.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Due date -->
+        <div class="capture__field">
+          <label class="capture__field-label">Due date</label>
+          <input
+            type="date"
+            class="capture__date-input"
+            [value]="dueDate()"
+            (input)="dueDate.set($any($event.target).value)"
+          />
+        </div>
+
+        <!-- Tags -->
+        <div class="capture__field">
+          <label class="capture__field-label">Tags</label>
+          <div class="capture__tags-wrap">
+            @for (tag of tags(); track tag) {
+              <span class="capture__tag">
+                {{ tag }}
+                <button class="capture__tag-remove" (click)="removeTag(tag)">&times;</button>
+              </span>
+            }
+            <input
+              type="text"
+              class="capture__tag-input"
+              placeholder="Add tag..."
+              [value]="tagInput()"
+              (input)="tagInput.set($any($event.target).value)"
+              (keydown)="onTagKeydown($event)"
+              (blur)="addTag()"
+            />
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="capture__actions">
+      @if (speechService.isSupported) {
+        <div class="capture__voice">
+          <ds-voice-button
+            [recording]="speechService.isListening()"
+            (clicked)="speechService.toggle()"
+          />
+          @if (speechService.isListening()) {
+            <span class="capture__listening">Listening...</span>
+          }
+        </div>
+      }
+
+      @if (taskTitle()) {
+        <button class="capture__save-btn" (click)="onSubmit()">
+          Save
+        </button>
+      }
+    </div>
+  </div>
+</div>

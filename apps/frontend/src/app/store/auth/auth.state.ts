@@ -1,6 +1,7 @@
 import { IUser } from '@app/interfaces';
 
 export interface AuthState {
+  initialized: boolean;
   isAuthenticated: boolean;
   user: IUser | null;
   token: string | null;
@@ -11,6 +12,7 @@ export interface AuthState {
 }
 
 export const initialAuthState: AuthState = {
+  initialized: false,
   isAuthenticated: false,
   user: null,
   token: null,

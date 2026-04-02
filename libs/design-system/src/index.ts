@@ -16,3 +16,15 @@ export { AlertComponent } from './lib/components/alert/alert.component';
 export { ToastService } from './lib/components/toast/toast.service';
 export type { Toast } from './lib/components/toast/toast.service';
 export { ToastContainerComponent } from './lib/components/toast/toast-container.component';
+
+// Dark theme components
+export { FocusCardComponent } from './lib/components/focus-card/focus-card.component';
+export { BottomNavComponent } from './lib/components/bottom-nav/bottom-nav.component';
+export type { NavItem } from './lib/components/bottom-nav/bottom-nav.component';
+export { VoiceButtonComponent } from './lib/components/voice-button/voice-button.component';
+export { ProgressDotsComponent } from './lib/components/progress-dots/progress-dots.component';
+export { TaskRowComponent } from './lib/components/task-row/task-row.component';
+export { MeditationBgComponent } from './lib/components/meditation-bg/meditation-bg.component';
+export type { MeditationScene } from './lib/components/meditation-bg/meditation-bg.component';
+export { TaskDetailSheetComponent } from './lib/components/task-detail-sheet/task-detail-sheet.component';
+export type { TaskDetailData } from './lib/components/task-detail-sheet/task-detail-sheet.component';

@@ -8,6 +8,8 @@ import { provideEffects } from '@ngrx/effects';
 import { appRoutes } from './app.routes';
 import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
+import { tasksReducer } from './store/tasks/tasks.reducer';
+import { TasksEffects } from './store/tasks/tasks.effects';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -16,8 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    provideStore({ auth: authReducer }),
-    provideEffects([AuthEffects]),
+    provideStore({ auth: authReducer, tasks: tasksReducer }),
+    provideEffects([AuthEffects, TasksEffects]),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

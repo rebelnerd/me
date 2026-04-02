@@ -1,0 +1,9 @@
+<div class="progress-dots">
+  @for (dot of dots(); track dot.index) {
+    <span
+      class="progress-dots__dot"
+      [class.progress-dots__dot--active]="dot.state === 'active'"
+      [class.progress-dots__dot--completed]="dot.state === 'completed'"
+    ></span>
+  }
+</div>

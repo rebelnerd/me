@@ -1,0 +1,46 @@
+<div class="task-row-wrapper">
+  <div
+    class="task-row"
+    [class.task-row--done]="done()"
+    (click)="tapped.emit()"
+  >
+    <button
+      class="task-row__check"
+      [class.task-row__check--checked]="done()"
+      (click)="$event.stopPropagation(); toggled.emit()"
+      [attr.aria-label]="done() ? 'Mark as todo' : 'Mark as done'"
+    >
+      @if (done()) {
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="display:block">
+          <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      }
+    </button>
+
+    <div class="task-row__body">
+      <span class="task-row__title">{{ title() }}</span>
+
+      @if (priority() !== 'none' || dueDateDisplay || hasTags()) {
+        <div class="task-row__meta">
+          @if (priority() !== 'none') {
+            <span class="task-row__priority task-row__priority--{{ priority() }}"></span>
+          }
+          @if (dueDateDisplay) {
+            <span class="task-row__due" [class.task-row__due--overdue]="isOverdue">
+              {{ dueDateDisplay }}
+            </span>
+          }
+          @if (hasTags()) {
+            <span class="task-row__tag-dot"></span>
+          }
+        </div>
+      }
+    </div>
+
+    @if (draggable()) {
+      <span class="task-row__drag" cdkDragHandle (click)="$event.stopPropagation()">
+        <lucide-icon [img]="gripIcon" [size]="16"></lucide-icon>
+      </span>
+    }
+  </div>
+</div>

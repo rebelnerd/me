@@ -3,12 +3,19 @@
 }
 
 .ds-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   border: 1px solid transparent;
+  padding: 0;
   cursor: pointer;
   transition: all var(--transition-fast);
+  line-height: 0;
+
+  lucide-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &:disabled {
     opacity: 0.5;

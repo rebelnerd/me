@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #080B1A;
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    z-index: 1;
+  }
+
+  // Desktop: nav moves to left sidebar
+  @media (min-width: 768px) {
+    flex-direction: row;
+
+    ds-bottom-nav {
+      order: -1; // nav before content
+    }
+  }
+}

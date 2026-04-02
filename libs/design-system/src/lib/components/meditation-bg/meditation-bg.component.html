@@ -1,0 +1,16 @@
+<div class="meditation-bg" [class]="'meditation-bg ' + sceneClass() + ' ' + intensityClass() + ' ' + animatedClass()">
+  <!-- Photo layer -->
+  <div
+    class="meditation-bg__photo"
+    [style.background-image]="'url(' + imageUrl() + ')'"
+  ></div>
+
+  <!-- Dark overlay to ensure readability -->
+  <div class="meditation-bg__overlay"></div>
+
+  <!-- Color tint layer per scene -->
+  <div class="meditation-bg__tint"></div>
+
+  <!-- Subtle grain texture -->
+  <div class="meditation-bg__grain"></div>
+</div>

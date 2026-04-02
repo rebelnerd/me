@@ -22,11 +22,23 @@ export const appRoutes: Route[] = [
   {
     path: '',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./shell/shell.component').then((m) => m.ShellComponent),
     children: [
       {
         path: '',
         loadComponent: () =>
-          import('./home/home.component').then((m) => m.HomeComponent),
+          import('./focus/focus.component').then((m) => m.FocusComponent),
+      },
+      {
+        path: 'capture',
+        loadComponent: () =>
+          import('./capture/capture.component').then((m) => m.CaptureComponent),
+      },
+      {
+        path: 'plan',
+        loadComponent: () =>
+          import('./plan/plan.component').then((m) => m.PlanComponent),
       },
     ],
   },

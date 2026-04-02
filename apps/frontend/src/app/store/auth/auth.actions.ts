@@ -16,7 +16,7 @@ export const AuthActions = createActionGroup({
     LogoutSuccess: emptyProps(),
 
     GetMe: emptyProps(),
-    GetMeSuccess: props<{ user: IUser }>(),
+    GetMeSuccess: props<{ user: IUser; accessToken?: string; xsrfToken?: string }>(),
     GetMeFailure: props<{ error: string }>(),
 
     RefreshToken: emptyProps(),

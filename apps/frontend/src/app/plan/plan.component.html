@@ -1,0 +1,139 @@
+<div class="plan">
+  <!-- Date header -->
+  <div class="plan__header">
+    <ds-icon-button
+      variant="ghost"
+      size="sm"
+      shape="circle"
+      [icon]="chevronLeftIcon"
+      ariaLabel="Previous day"
+      (clicked)="navigateDate(-1)"
+    />
+    <h2 class="plan__date">{{ displayDate() }}</h2>
+    <ds-icon-button
+      variant="ghost"
+      size="sm"
+      shape="circle"
+      [icon]="chevronRightIcon"
+      ariaLabel="Next day"
+      (clicked)="navigateDate(1)"
+    />
+  </div>
+
+  <!-- Today's tasks -->
+  @if (todoTasks().length > 0) {
+    <div class="plan__section">
+      <div class="plan__section-label">Focus</div>
+      <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="plan__list">
+        @for (task of todoTasks(); track task.id) {
+          <div cdkDrag class="plan__item">
+            <ds-task-row
+              [title]="task.title"
+              [done]="false"
+              [draggable]="true"
+              [priority]="task.priority"
+              [hasTags]="task.tags && task.tags.length > 0"
+              (toggled)="onTaskToggle(task)"
+              (deleted)="onTaskDelete(task)"
+              (tapped)="onTaskTap(task)"
+            />
+            <!-- Bounce to tomorrow -->
+            <button class="plan__bounce-btn" (click)="bounceTask(task)" title="Bounce to tomorrow">
+              <lucide-icon [img]="chevronRightIcon" [size]="14"></lucide-icon>
+            </button>
+            <!-- Remove from today -->
+            <button class="plan__remove-btn" (click)="unscheduleTask(task)" title="Remove from today">
+              <lucide-icon [img]="minusIcon" [size]="14"></lucide-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (doneTasks().length > 0) {
+    <div class="plan__section">
+      <div class="plan__section-label">Completed</div>
+      <div class="plan__list">
+        @for (task of doneTasks(); track task.id) {
+          <div class="plan__item">
+            <ds-task-row
+              [title]="task.title"
+              [done]="true"
+              [draggable]="false"
+              [priority]="task.priority"
+              [hasTags]="task.tags && task.tags.length > 0"
+              (toggled)="onTaskToggle(task)"
+              (deleted)="onTaskDelete(task)"
+              (tapped)="onTaskTap(task)"
+            />
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (tasks().length === 0 && !loading()) {
+    <div class="plan__empty-today">
+      <p>No tasks scheduled</p>
+      <p class="plan__empty-hint">Add from backlog below or capture a new task</p>
+    </div>
+  }
+
+  <!-- Backlog section -->
+  <div class="plan__backlog">
+    <button class="plan__backlog-toggle" (click)="showBacklog.set(!showBacklog())">
+      <span class="plan__backlog-label">Backlog</span>
+      @if (backlog().length > 0) {
+        <span class="plan__backlog-count">{{ backlog().length }}</span>
+      }
+      <lucide-icon [img]="showBacklog() ? chevronLeftIcon : chevronRightIcon" [size]="14"></lucide-icon>
+    </button>
+
+    @if (showBacklog()) {
+      <div class="plan__backlog-list">
+        @if (backlog().length === 0) {
+          <div class="plan__backlog-empty">
+            <p>No tasks in backlog</p>
+            <button class="plan__empty-btn" (click)="goToCapture()">Capture a task</button>
+          </div>
+        } @else {
+          @for (task of backlog(); track task.id) {
+            <div class="plan__backlog-item">
+              <button class="plan__add-btn" (click)="scheduleTask(task)" title="Add to today">
+                <lucide-icon [img]="plusIcon" [size]="14"></lucide-icon>
+              </button>
+              <div class="plan__backlog-task" (click)="onTaskTap(task)">
+                <span class="plan__backlog-title">{{ task.title }}</span>
+                @if (task.priority !== 'none' || task.dueDate) {
+                  <div class="plan__backlog-meta">
+                    @if (task.priority !== 'none') {
+                      <span class="plan__backlog-dot plan__backlog-dot--{{ task.priority }}"></span>
+                    }
+                    @if (task.dueDate) {
+                      <span class="plan__backlog-due">Due {{ task.dueDate }}</span>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Task detail sheet -->
+@if (selectedTask(); as task) {
+  <ds-task-detail-sheet
+    [open]="detailOpen()"
+    [title]="task.title"
+    [description]="task.description"
+    [priority]="task.priority"
+    [dueDate]="task.dueDate"
+    [tags]="task.tags || []"
+    (saved)="onDetailSaved($event)"
+    (closed)="onDetailClosed()"
+  />
+}

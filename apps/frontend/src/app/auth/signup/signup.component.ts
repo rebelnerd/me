@@ -11,65 +11,7 @@ import { selectAuthLoading, selectAuthError } from '../../store/auth/auth.select
   selector: 'app-signup',
   standalone: true,
   imports: [FormsModule, RouterLink, ButtonComponent, TextInputComponent],
-  template: `
-    <div class="auth-page">
-      <div class="auth-card">
-        <h1 class="auth-title">Create Account</h1>
-        <p class="auth-subtitle">Get started by creating your account.</p>
-
-        @if (error()) {
-          <div class="auth-error">{{ error() }}</div>
-        }
-
-        <form (ngSubmit)="onSubmit()" class="auth-form">
-          <div class="auth-name-row">
-            <ds-text-input
-              label="First Name"
-              placeholder="John"
-              [ngModel]="firstName()"
-              (ngModelChange)="firstName.set($event)"
-              name="firstName"
-            />
-            <ds-text-input
-              label="Last Name"
-              placeholder="Doe"
-              [ngModel]="lastName()"
-              (ngModelChange)="lastName.set($event)"
-              name="lastName"
-            />
-          </div>
-          <ds-text-input
-            label="Email"
-            type="email"
-            placeholder="you@example.com"
-            [ngModel]="email()"
-            (ngModelChange)="email.set($event)"
-            name="email"
-          />
-          <ds-text-input
-            label="Password"
-            type="password"
-            placeholder="Create a password"
-            [ngModel]="password()"
-            (ngModelChange)="password.set($event)"
-            name="password"
-          />
-          <ds-button
-            type="submit"
-            [fullWidth]="true"
-            [loading]="loading()"
-            [disabled]="!email() || !password() || !firstName() || !lastName()"
-          >
-            Create Account
-          </ds-button>
-        </form>
-
-        <p class="auth-footer">
-          Already have an account? <a routerLink="/auth/login">Sign in</a>
-        </p>
-      </div>
-    </div>
-  `,
+  templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {

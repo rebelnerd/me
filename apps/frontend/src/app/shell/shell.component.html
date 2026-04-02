@@ -1,0 +1,10 @@
+<div class="shell">
+  <ds-meditation-bg [scene]="scene()" intensity="normal" [animated]="true" />
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+  <ds-bottom-nav
+    [items]="navItems()"
+    (navigated)="onNavigate($event)"
+  />
+</div>

@@ -1,0 +1,104 @@
+@if (open()) {
+  <div class="sheet__overlay" (click)="onOverlayClick($event)">
+    <div class="sheet" (click)="$event.stopPropagation()">
+      <div class="sheet__body">
+        <!-- Header -->
+        <div class="sheet__header">
+          <button class="sheet__close" (click)="onSave()">
+            <lucide-icon [img]="xIcon" [size]="20"></lucide-icon>
+          </button>
+        </div>
+
+        <!-- Title -->
+        <input
+          type="text"
+          class="sheet__title-input"
+          placeholder="Task title"
+          [value]="editTitle()"
+          (input)="editTitle.set($any($event.target).value)"
+        />
+
+        <!-- Description -->
+        <div class="sheet__field">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="descIcon" [size]="16"></lucide-icon>
+          </div>
+          <textarea
+            class="sheet__textarea"
+            placeholder="Add a description..."
+            rows="3"
+            [value]="editDescription()"
+            (input)="editDescription.set($any($event.target).value)"
+          ></textarea>
+        </div>
+
+        <!-- Priority -->
+        <div class="sheet__field sheet__field--row">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="flagIcon" [size]="16" [style.color]="currentPriorityColor()"></lucide-icon>
+          </div>
+          <button class="sheet__field-btn" (click)="showPriorityPicker.set(!showPriorityPicker())">
+            <span [style.color]="currentPriorityColor() || 'rgba(237, 232, 223, 0.45)'">
+              {{ currentPriorityLabel() }}
+            </span>
+            <lucide-icon [img]="chevronDown" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        @if (showPriorityPicker()) {
+          <div class="sheet__picker">
+            @for (p of priorities; track p.value) {
+              <button
+                class="sheet__picker-option"
+                [class.sheet__picker-option--active]="editPriority() === p.value"
+                (click)="setPriority(p.value)"
+              >
+                @if (p.color) {
+                  <span class="sheet__picker-dot" [style.background]="p.color"></span>
+                }
+                {{ p.label }}
+              </button>
+            }
+          </div>
+        }
+
+        <!-- Due Date -->
+        <div class="sheet__field sheet__field--row">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="calendarIcon" [size]="16"></lucide-icon>
+          </div>
+          <input
+            type="date"
+            class="sheet__date-input"
+            [value]="editDueDate()"
+            (input)="editDueDate.set($any($event.target).value)"
+          />
+        </div>
+
+        <!-- Tags -->
+        <div class="sheet__field">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="tagIcon" [size]="16"></lucide-icon>
+          </div>
+          <div class="sheet__tags">
+            @for (tag of editTags(); track tag) {
+              <span class="sheet__tag">
+                {{ tag }}
+                <button class="sheet__tag-remove" (click)="removeTag(tag)">&times;</button>
+              </span>
+            }
+            <input
+              type="text"
+              class="sheet__tag-input"
+              placeholder="Add tag..."
+              [value]="tagInput()"
+              (input)="tagInput.set($any($event.target).value)"
+              (keydown)="onTagKeydown($event)"
+              (blur)="addTag()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

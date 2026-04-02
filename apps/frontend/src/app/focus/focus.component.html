@@ -1,0 +1,76 @@
+<div class="focus">
+  @if (progressText()) {
+    <div class="focus__progress-text">{{ progressText() }}</div>
+  }
+
+  <div class="focus__card-area">
+    @if (focusTask(); as task) {
+      <div class="focus__card" [class.focus__card--completing]="completing()" (click)="openDetail()">
+        <ds-focus-card
+          [title]="task.title"
+          [subtitle]="task.description || task.notes || ''"
+        />
+        @if (task.priority !== 'none' || task.dueDate || (task.tags && task.tags.length)) {
+          <div class="focus__meta">
+            @if (task.priority !== 'none') {
+              <span class="focus__meta-pill focus__meta-pill--{{ task.priority }}">
+                {{ task.priority }}
+              </span>
+            }
+            @if (task.dueDate) {
+              <span class="focus__meta-pill">
+                Due {{ task.dueDate }}
+              </span>
+            }
+            @for (tag of task.tags; track tag) {
+              <span class="focus__meta-pill focus__meta-pill--tag">{{ tag }}</span>
+            }
+          </div>
+        }
+        <div class="focus__tap-hint">Tap for details</div>
+      </div>
+    } @else if (!loading()) {
+      <ds-focus-card
+        variant="empty"
+        title="All clear for today"
+        subtitle="Take a breath. You're caught up."
+        [emptyIcon]="checkCircleIcon"
+      />
+    }
+  </div>
+
+  <div class="focus__bottom">
+    @if (focusTask()) {
+      <div class="focus__actions">
+        <button class="focus__bounce-btn" (click)="bounceTask()" [disabled]="completing()" title="Bounce to tomorrow">
+          <lucide-icon [img]="arrowRightIcon" [size]="18"></lucide-icon>
+          Tomorrow
+        </button>
+        <button class="focus__done-btn" (click)="completeTask()" [disabled]="completing()">
+          Done
+        </button>
+      </div>
+    }
+
+    @if (totalTasks() > 0) {
+      <ds-progress-dots
+        [total]="totalTasks()"
+        [current]="currentIndex()"
+        [completed]="doneCount()"
+      />
+    }
+  </div>
+</div>
+
+@if (focusTask(); as task) {
+  <ds-task-detail-sheet
+    [open]="detailOpen()"
+    [title]="task.title"
+    [description]="task.description"
+    [priority]="task.priority"
+    [dueDate]="task.dueDate"
+    [tags]="task.tags || []"
+    (saved)="onDetailSaved($event)"
+    (closed)="onDetailClosed()"
+  />
+}

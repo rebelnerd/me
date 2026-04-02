@@ -1,0 +1,186 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.focus-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 3.5rem 2.5rem;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // Glass surface
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-dark-float);
+
+  // Animated gradient rim light
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(232, 155, 108, 0.2) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(154, 127, 204, 0.15) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+    animation: rim-rotate 8s linear infinite;
+  }
+
+  // Inner ambient glow
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(
+      ellipse 30% 40% at 50% 40%,
+      rgba(232, 155, 108, 0.04) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    animation: inner-glow var(--transition-breath) infinite alternate;
+  }
+
+  &__content {
+    text-align: center;
+    max-width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: content-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  &__icon {
+    color: var(--color-dark-accent-sage);
+    margin-bottom: 2rem;
+    animation: breathe-icon var(--transition-breath) infinite;
+    filter: drop-shadow(0 0 20px rgba(109, 184, 154, 0.3));
+  }
+
+  &__title {
+    font-family: var(--font-family-display);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--color-dark-text-primary);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    word-break: break-word;
+  }
+
+  &__subtitle {
+    font-family: var(--font-family-body);
+    font-size: 0.9rem;
+    color: var(--color-dark-text-secondary);
+    margin-top: 1rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  // Default variant - the task card
+  &--default {
+    .focus-card__title {
+      font-size: 1.75rem;
+    }
+  }
+
+  // Complete variant
+  &--complete {
+    .focus-card__icon {
+      animation: complete-burst 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+  }
+
+  // Empty variant - ethereal
+  &--empty {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+
+    .focus-card__title {
+      font-family: var(--font-family-body);
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: rgba(237, 232, 223, 0.85);
+      letter-spacing: 0.02em;
+    }
+
+    .focus-card__subtitle {
+      font-size: 0.85rem;
+      color: rgba(237, 232, 223, 0.55);
+    }
+  }
+}
+
+@keyframes rim-rotate {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes inner-glow {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+@keyframes breathe-icon {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-4px);
+  }
+}
+
+@keyframes complete-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: drop-shadow(0 0 0 rgba(109, 184, 154, 0));
+  }
+  50% {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 30px rgba(109, 184, 154, 0.5));
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 20px rgba(109, 184, 154, 0.3));
+  }
+}
+
+@keyframes content-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

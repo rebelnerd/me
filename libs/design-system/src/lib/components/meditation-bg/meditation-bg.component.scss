@@ -1,0 +1,92 @@
+:host {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.meditation-bg {
+  position: absolute;
+  inset: 0;
+
+  // ─── Photo ─────────────────────────────────────────
+  &__photo {
+    position: absolute;
+    inset: -20px; // Extra bleed for zoom animation
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 1.5s ease;
+  }
+
+  // ─── Dark overlay ──────────────────────────────────
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 11, 26, 0.55);
+  }
+
+  // ─── Color tint per scene ──────────────────────────
+  &__tint {
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    mix-blend-mode: soft-light;
+  }
+
+  // ─── Grain ─────────────────────────────────────────
+  &__grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+}
+
+// ─── Scene tints ───────────────────────────────────────
+.meditation-bg--aurora .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(154, 127, 204, 0.3) 0%, rgba(109, 184, 154, 0.15) 100%);
+}
+.meditation-bg--ember .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(232, 155, 108, 0.25) 0%, rgba(212, 170, 92, 0.15) 100%);
+}
+.meditation-bg--ocean .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(100, 160, 220, 0.2) 0%, rgba(80, 190, 180, 0.1) 100%);
+}
+.meditation-bg--twilight .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(154, 127, 204, 0.2) 0%, rgba(232, 155, 108, 0.15) 100%);
+}
+.meditation-bg--forest .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(109, 184, 154, 0.2) 0%, rgba(80, 140, 100, 0.15) 100%);
+}
+.meditation-bg--nebula .meditation-bg__tint {
+  background: linear-gradient(180deg, rgba(154, 127, 204, 0.25) 0%, rgba(232, 155, 108, 0.1) 100%);
+}
+
+// ─── Intensity ─────────────────────────────────────────
+.meditation-bg--subtle .meditation-bg__overlay {
+  background: rgba(8, 11, 26, 0.7);
+}
+.meditation-bg--vivid .meditation-bg__overlay {
+  background: rgba(8, 11, 26, 0.35);
+}
+
+// ─── Animation — slow Ken Burns zoom ───────────────────
+.meditation-bg--animated .meditation-bg__photo {
+  animation: ken-burns 60s ease-in-out infinite alternate;
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-1%, -1%);
+  }
+  100% {
+    transform: scale(1.04) translate(0.5%, 0.5%);
+  }
+}

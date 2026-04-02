@@ -1,0 +1,13 @@
+<div [class]="'focus-card focus-card--' + variant()">
+  <div class="focus-card__content">
+    @if (variant() === 'empty' && emptyIcon()) {
+      <div class="focus-card__icon">
+        <lucide-icon [img]="emptyIcon()" [size]="48"></lucide-icon>
+      </div>
+    }
+    <h2 class="focus-card__title">{{ title() }}</h2>
+    @if (subtitle()) {
+      <p class="focus-card__subtitle">{{ subtitle() }}</p>
+    }
+  </div>
+</div>

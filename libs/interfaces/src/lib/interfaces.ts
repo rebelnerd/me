@@ -45,3 +45,58 @@ export interface IApiError {
   error?: string;
   code?: string;
 }
+
+// Task interfaces
+export enum TaskStatus {
+  Todo = 'todo',
+  Done = 'done',
+}
+
+export enum TaskPriority {
+  None = 'none',
+  Low = 'low',
+  Medium = 'medium',
+  High = 'high',
+}
+
+export interface ITask {
+  id: number;
+  title: string;
+  description: string | null;
+  notes: string | null;
+  status: TaskStatus;
+  priority: TaskPriority;
+  dueDate: string | null;
+  tags: string[];
+  scheduledDate: string | null;  // which day to focus on this task, null = backlog
+  position: number;
+  userId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ICreateTaskRequest {
+  title: string;
+  description?: string;
+  notes?: string;
+  priority?: TaskPriority;
+  dueDate?: string;
+  tags?: string[];
+  scheduledDate?: string;  // null/omitted = backlog
+}
+
+export interface IUpdateTaskRequest {
+  title?: string;
+  description?: string;
+  notes?: string;
+  status?: TaskStatus;
+  priority?: TaskPriority;
+  dueDate?: string | null;
+  tags?: string[];
+  scheduledDate?: string | null;
+  position?: number;
+}
+
+export interface IReorderTasksRequest {
+  taskIds: number[];
+}
