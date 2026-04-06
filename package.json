@@ -3,15 +3,29 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:api": "npx nx run api:serve",
-    "start:frontend": "npx nx run frontend:serve",
-    "build:api": "npx nx run api:build --configuration=production",
-    "build:frontend": "npx nx run frontend:build --configuration=production",
-    "test:api": "npx nx test api",
-    "test:frontend": "npx nx test frontend",
-    "lint": "npx nx run-many --target=lint --all"
+    "start:api": "nx run api:serve",
+    "start:frontend": "nx run frontend:serve",
+    "build:api": "nx run api:build --configuration=production",
+    "build:frontend": "nx run frontend:build --configuration=production",
+    "test:api": "nx test api",
+    "test:frontend": "nx test frontend",
+    "lint": "nx run-many --target=lint --all"
   },
   "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "less",
+      "lmdb",
+      "msgpackr-extract",
+      "nx",
+      "unrs-resolver"
+    ]
+  },
   "dependencies": {
     "@angular-devkit/build-angular": "21.2.5",
     "@angular/animations": "^21.2.6",

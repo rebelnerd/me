@@ -39,13 +39,14 @@ All components use Angular signals, standalone architecture, external HTML/SCSS 
 ### Prerequisites
 
 - Node.js 20+
+- pnpm 10+
 - MySQL 8+
 
 ### Setup
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Copy environment config
 cp .env.example .env
@@ -55,22 +56,22 @@ cp .env.example .env
 mysql -u root -e "CREATE DATABASE app_dev;"
 
 # Start the API (port 3000)
-npm run start:api
+pnpm start:api
 
 # Start the frontend (port 4200, proxied to API)
-npm run start:frontend
+pnpm start:frontend
 ```
 
 ### Available Scripts
 
 ```bash
-npm run start:api          # Dev server for NestJS API
-npm run start:frontend     # Dev server for Angular frontend
-npm run build:api          # Production build for API
-npm run build:frontend     # Production build for frontend
-npm run test:api           # Run API tests
-npm run test:frontend      # Run frontend tests
-npm run lint               # Lint all projects
+pnpm start:api          # Dev server for NestJS API
+pnpm start:frontend     # Dev server for Angular frontend
+pnpm build:api          # Production build for API
+pnpm build:frontend     # Production build for frontend
+pnpm test:api           # Run API tests
+pnpm test:frontend      # Run frontend tests
+pnpm lint               # Lint all projects
 ```
 
 ## Project Structure
@@ -127,7 +128,7 @@ See [CLAUDE.md](CLAUDE.md) for detailed development guidelines.
 
 1. **Rename the app prefix**: Update `@app/` in `tsconfig.base.json` paths and imports
 2. **Add new entities**: Create in `apps/api/src/app/entities/`, register in `typeorm.config.ts`
-3. **Add new API modules**: Use `npx nx g @nx/nest:module <name> --directory=apps/api/src/app/modules/<name>`
+3. **Add new API modules**: Use `pnpm exec nx g @nx/nest:module <name> --directory=apps/api/src/app/modules/<name>`
 4. **Add new NgRx stores**: Follow the pattern in `apps/frontend/src/app/store/auth/`
 5. **Add new DS components**: Create in `libs/design-system/src/lib/components/`, export from `index.ts`
 6. **Add new pages**: Lazy-load in `apps/frontend/src/app/app.routes.ts`

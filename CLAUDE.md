@@ -15,21 +15,21 @@ Nx monorepo template with:
 
 ```bash
 # Run API (port 3000)
-npm run start:api
+pnpm start:api
 
 # Run frontend (port 4200, proxied to API)
-npm run start:frontend
+pnpm start:frontend
 
 # Build for production
-npm run build:api
-npm run build:frontend
+pnpm build:api
+pnpm build:frontend
 
 # Test
-npm run test:api
-npm run test:frontend
+pnpm test:api
+pnpm test:frontend
 
 # Lint all
-npm run lint
+pnpm lint
 ```
 
 ## Architecture

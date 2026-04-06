@@ -3,6 +3,6 @@ import { IFrontendConfig } from '@app/types';
 export const environment: IFrontendConfig = {
   production: true,
   apiUrl: '/api',
-  appName: 'Me App',
+  appName: 'Me',
   url: 'https://yourapp.com',
 };

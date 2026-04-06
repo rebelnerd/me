@@ -58,6 +58,12 @@ a {
 .text-tertiary { color: var(--color-text-tertiary); }
 .text-brand { color: var(--color-text-brand); }
 
+/* On-image text utilities — use over photo/atmosphere backgrounds where contrast matters */
+.text-on-image-primary { color: var(--color-on-image-primary); }
+.text-on-image-secondary { color: var(--color-on-image-secondary); }
+.text-on-image-tertiary { color: var(--color-on-image-tertiary); }
+.text-on-image-quaternary { color: var(--color-on-image-quaternary); }
+
 /* Auth page ambient orb animations (shared between login/signup) */
 @keyframes auth-orb-1 {
   0% { transform: translate(0, 0) scale(1); }

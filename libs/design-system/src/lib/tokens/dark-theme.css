@@ -12,6 +12,12 @@
   --color-dark-text-tertiary: #5C576B;
   --color-dark-text-ghost: rgba(237, 232, 223, 0.25);
 
+  /* Text on image backgrounds - high contrast whites for readability over photos */
+  --color-on-image-primary: #ffffff;
+  --color-on-image-secondary: rgba(255, 255, 255, 0.85);
+  --color-on-image-tertiary: rgba(255, 255, 255, 0.7);
+  --color-on-image-quaternary: rgba(255, 255, 255, 0.55);
+
   /* Accents - warm embers and night flora */
   --color-dark-accent-peach: #E89B6C;
   --color-dark-accent-peach-soft: rgba(232, 155, 108, 0.15);
