@@ -1,0 +1,40 @@
+<div class="profile">
+  <header class="profile__header">
+    <button class="profile__back" (click)="goBack()" aria-label="Go back">
+      <lucide-icon [img]="arrowLeftIcon" [size]="20"></lucide-icon>
+    </button>
+    <h1 class="profile__title">Profile</h1>
+  </header>
+
+  @if (user(); as u) {
+    <div class="profile__card">
+      <ds-avatar [name]="userName()" size="xl" />
+      <h2 class="profile__name">{{ userName() }}</h2>
+      @if (memberSince()) {
+        <span class="profile__since">Member since {{ memberSince() }}</span>
+      }
+    </div>
+
+    <div class="profile__section">
+      <div class="profile__field">
+        <lucide-icon [img]="mailIcon" [size]="16"></lucide-icon>
+        <div class="profile__field-content">
+          <span class="profile__field-label">Email</span>
+          <span class="profile__field-value">{{ u.email }}</span>
+        </div>
+      </div>
+
+      <div class="profile__field">
+        <lucide-icon [img]="shieldIcon" [size]="16"></lucide-icon>
+        <div class="profile__field-content">
+          <span class="profile__field-label">Role</span>
+          <span class="profile__field-value">{{ u.role }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile__actions">
+      <ds-button variant="error" [fullWidth]="true" (clicked)="logout()">Log Out</ds-button>
+    </div>
+  }
+</div>

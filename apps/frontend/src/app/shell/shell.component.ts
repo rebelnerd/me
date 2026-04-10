@@ -4,11 +4,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs/operators';
 import { BottomNavComponent, NavItem, MeditationBgComponent, MeditationScene } from '@app/design-system';
 import { Target, PlusCircle, Calendar } from 'lucide-angular';
+import { AccountMenuComponent } from './account-menu/account-menu.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, BottomNavComponent, MeditationBgComponent],
+  imports: [RouterOutlet, BottomNavComponent, MeditationBgComponent, AccountMenuComponent],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
   host: { class: 'theme-dark' },

@@ -12,6 +12,14 @@
   overflow: hidden;
   background: #080B1A;
 
+  &__header--mobile {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.75rem 1rem 0;
+    position: relative;
+    z-index: 10;
+  }
+
   &__content {
     flex: 1;
     overflow-y: auto;
@@ -21,12 +29,46 @@
     z-index: 1;
   }
 
+  &__sidebar-wrap {
+    display: contents;
+  }
+
+  &__sidebar-footer {
+    display: none;
+  }
+
   // Desktop: nav moves to left sidebar
   @media (min-width: 768px) {
     flex-direction: row;
 
-    ds-bottom-nav {
-      order: -1; // nav before content
+    &__header--mobile {
+      display: none;
+    }
+
+    &__sidebar-wrap {
+      display: flex;
+      flex-direction: column;
+      order: -1;
+      height: 100%;
+      position: relative;
+      z-index: 10;
+      border-right: 1px solid var(--color-dark-border-subtle);
+    }
+
+    &__sidebar-wrap ds-bottom-nav {
+      flex: 1;
+    }
+
+    // Remove the border from bottom-nav since the wrap handles it
+    &__sidebar-wrap ::ng-deep .bottom-nav {
+      border-right: none;
+    }
+
+    &__sidebar-footer {
+      display: flex;
+      justify-content: center;
+      padding: 1rem 0;
+      border-top: 1px solid var(--color-dark-border-subtle, rgba(255, 255, 255, 0.06));
     }
   }
 }

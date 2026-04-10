@@ -40,6 +40,11 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('./plan/plan.component').then((m) => m.PlanComponent),
       },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./profile/profile.component').then((m) => m.ProfileComponent),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

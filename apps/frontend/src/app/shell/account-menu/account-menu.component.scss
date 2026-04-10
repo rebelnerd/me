@@ -1,0 +1,118 @@
+.account-menu {
+  position: relative;
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 240px;
+    background: rgba(20, 22, 40, 0.95);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--color-dark-border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    animation: menu-appear 0.15s ease-out;
+
+    // Desktop: open upward from sidebar footer
+    @media (min-width: 768px) {
+      top: auto;
+      bottom: calc(100% + 0.5rem);
+      right: auto;
+      left: 0;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__name {
+    font-family: var(--font-family-body, 'Outfit', sans-serif);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-dark-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__email {
+    font-family: var(--font-family-body, 'Outfit', sans-serif);
+    font-size: 0.75rem;
+    color: var(--color-dark-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 0.25rem 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-family-body, 'Outfit', sans-serif);
+    font-size: 0.875rem;
+    color: var(--color-dark-text-primary);
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    &--danger {
+      color: var(--color-dark-accent-peach);
+
+      &:hover {
+        background: rgba(232, 155, 108, 0.1);
+      }
+    }
+  }
+}
+
+@keyframes menu-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

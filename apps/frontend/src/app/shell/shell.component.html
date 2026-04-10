@@ -1,10 +1,18 @@
 <div class="shell">
   <ds-meditation-bg [scene]="scene()" intensity="normal" [animated]="true" />
+  <header class="shell__header shell__header--mobile">
+    <app-account-menu />
+  </header>
   <main class="shell__content">
     <router-outlet />
   </main>
-  <ds-bottom-nav
-    [items]="navItems()"
-    (navigated)="onNavigate($event)"
-  />
+  <div class="shell__sidebar-wrap">
+    <ds-bottom-nav
+      [items]="navItems()"
+      (navigated)="onNavigate($event)"
+    />
+    <div class="shell__sidebar-footer">
+      <app-account-menu />
+    </div>
+  </div>
 </div>

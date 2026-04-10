@@ -1,0 +1,29 @@
+<div class="account-menu">
+  <button class="account-menu__trigger" (click)="toggle()" aria-label="Account menu">
+    <ds-avatar [name]="userName()" size="sm" />
+  </button>
+
+  @if (open()) {
+    <div class="account-menu__dropdown">
+      <div class="account-menu__header">
+        <ds-avatar [name]="userName()" size="md" />
+        <div class="account-menu__info">
+          <span class="account-menu__name">{{ userName() }}</span>
+          <span class="account-menu__email">{{ userEmail() }}</span>
+        </div>
+      </div>
+
+      <div class="account-menu__divider"></div>
+
+      <button class="account-menu__item" (click)="goToProfile()">
+        <lucide-icon [img]="settingsIcon" [size]="18"></lucide-icon>
+        <span>Profile Settings</span>
+      </button>
+
+      <button class="account-menu__item account-menu__item--danger" (click)="logout()">
+        <lucide-icon [img]="logoutIcon" [size]="18"></lucide-icon>
+        <span>Log Out</span>
+      </button>
+    </div>
+  }
+</div>
