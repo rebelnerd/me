@@ -42,9 +42,11 @@
   <div class="focus__bottom">
     @if (focusTask()) {
       <div class="focus__actions">
-        <button class="focus__bounce-btn" (click)="bounceTask()" [disabled]="completing()" title="Bounce to tomorrow">
+        <button class="focus__secondary-btn" (click)="bounceTask()" [disabled]="completing()" title="Tomorrow">
           <lucide-icon [img]="arrowRightIcon" [size]="18"></lucide-icon>
-          Tomorrow
+        </button>
+        <button class="focus__secondary-btn" (click)="skipTask()" [disabled]="completing()" title="Later">
+          <lucide-icon [img]="arrowDownIcon" [size]="18"></lucide-icon>
         </button>
         <button class="focus__done-btn" (click)="completeTask()" [disabled]="completing()">
           Done
@@ -69,7 +71,12 @@
     [description]="task.description"
     [priority]="task.priority"
     [dueDate]="task.dueDate"
+    [scheduledDate]="task.scheduledDate"
     [tags]="task.tags || []"
+    [recurrenceRule]="task.recurrenceRule"
+    [prerequisites]="getPrerequisiteRefs()"
+    [prerequisiteSearchResults]="prereqSearchResults()"
+    (prerequisiteSearch)="onPrereqSearch($event)"
     (saved)="onDetailSaved($event)"
     (closed)="onDetailClosed()"
   />

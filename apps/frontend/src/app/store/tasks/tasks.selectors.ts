@@ -48,3 +48,18 @@ export const selectTasksError = createSelector(
   selectTasksState,
   (state) => state.error,
 );
+
+/**
+ * Get all tasks (scheduled + backlog) as a lookup map by id.
+ * Useful for resolving prerequisite titles.
+ */
+export const selectAllTasksMap = createSelector(
+  selectTasks,
+  selectBacklog,
+  (tasks, backlog) => {
+    const map = new Map<number, typeof tasks[number]>();
+    for (const t of tasks) map.set(t.id, t);
+    for (const t of backlog) map.set(t.id, t);
+    return map;
+  },
+);

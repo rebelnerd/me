@@ -51,4 +51,12 @@ export class TasksApiService {
       params: { date },
     });
   }
+
+  searchTasks(query: string, excludeId?: number): Observable<ITask[]> {
+    const params: Record<string, string> = { q: query };
+    if (excludeId) {
+      params['excludeId'] = String(excludeId);
+    }
+    return this.http.get<ITask[]>(`${this.baseUrl}/search`, { params });
+  }
 }

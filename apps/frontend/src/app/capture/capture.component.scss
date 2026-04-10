@@ -193,6 +193,76 @@
     }
   }
 
+  &__day-pills {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+  }
+
+  &__day-pill {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--color-dark-text-secondary);
+    font-family: var(--font-family-body);
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover { background: rgba(255, 255, 255, 0.06); }
+
+    &--active {
+      border-color: var(--color-dark-accent-sage, #A8C3A0);
+      background: rgba(168, 195, 160, 0.15);
+      color: var(--color-dark-accent-sage, #A8C3A0);
+    }
+  }
+
+  &__month-pick {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  &__month-label {
+    font-family: var(--font-family-body);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: rgba(237, 232, 223, 0.45);
+  }
+
+  &__month-input {
+    width: 55px;
+    padding: 0.35rem 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    color: var(--color-dark-text-primary);
+    font-family: var(--font-family-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    color-scheme: dark;
+    text-align: center;
+
+    &:focus { border-color: rgba(168, 195, 160, 0.3); }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    -moz-appearance: textfield;
+  }
+
   &__tags-wrap {
     display: flex;
     flex-wrap: wrap;

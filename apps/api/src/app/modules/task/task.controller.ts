@@ -32,6 +32,19 @@ export class TaskController {
     return this.taskService.findBacklog(userId, today);
   }
 
+  @Get('search')
+  async searchTasks(
+    @CurrentUser('id') userId: number,
+    @Query('q') query: string,
+    @Query('excludeId') excludeId?: string,
+  ) {
+    return this.taskService.searchForPrerequisites(
+      userId,
+      query || '',
+      excludeId ? parseInt(excludeId, 10) : undefined,
+    );
+  }
+
   @Get('focus')
   async getFocusTask(
     @CurrentUser('id') userId: number,

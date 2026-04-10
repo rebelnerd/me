@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { ITask, IUpdateTaskRequest, TaskPriority } from '@app/interfaces';
+import { ITask, IUpdateTaskRequest, IRecurrenceRule, TaskPriority } from '@app/interfaces';
 
 export const TasksActions = createActionGroup({
   source: '[Tasks]',
@@ -16,7 +16,7 @@ export const TasksActions = createActionGroup({
     LoadFocusTaskSuccess: props<{ task: ITask | null }>(),
     LoadFocusTaskFailure: props<{ error: string }>(),
 
-    CaptureTask: props<{ title: string; notes?: string; description?: string; priority?: TaskPriority; dueDate?: string }>(),
+    CaptureTask: props<{ title: string; notes?: string; description?: string; priority?: TaskPriority; dueDate?: string; recurrenceRule?: IRecurrenceRule }>(),
     CaptureTaskSuccess: props<{ task: ITask }>(),
     CaptureTaskFailure: props<{ error: string }>(),
 

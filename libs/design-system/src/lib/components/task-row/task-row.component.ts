@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, GripVertical } from 'lucide-angular';
+import { LucideAngularModule, GripVertical, Lock, Repeat } from 'lucide-angular';
 
 @Component({
   selector: 'ds-task-row',
@@ -12,16 +12,20 @@ import { LucideAngularModule, GripVertical } from 'lucide-angular';
 export class TaskRowComponent {
   title = input('');
   done = input(false);
+  blocked = input(false);
   draggable = input(true);
   priority = input<'none' | 'low' | 'medium' | 'high'>('none');
   dueDate = input<string | null>(null);
   hasTags = input(false);
+  recurring = input(false);
 
   toggled = output<void>();
   deleted = output<void>();
   tapped = output<void>();
 
   protected readonly gripIcon = GripVertical;
+  protected readonly lockIcon = Lock;
+  protected readonly repeatIcon = Repeat;
 
   get dueDateDisplay(): string {
     const d = this.dueDate();

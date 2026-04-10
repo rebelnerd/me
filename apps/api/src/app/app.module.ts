@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { typeOrmConfig } from './typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
@@ -11,6 +12,7 @@ import { RolesGuard } from './modules/auth/guards/roles.guard';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
+    ScheduleModule.forRoot(),
     AuthModule,
     UserModule,
     TaskModule,

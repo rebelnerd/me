@@ -75,18 +75,10 @@
   }
 
   &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 48px;
     height: 48px;
     border-radius: 14px;
-    background: linear-gradient(135deg, rgba(232, 155, 108, 0.15), rgba(154, 127, 204, 0.15));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 1.5rem;
-    font-style: italic;
-    color: #EDE8DF;
+    object-fit: contain;
   }
 
   &__title {

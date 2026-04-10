@@ -59,6 +59,18 @@ export enum TaskPriority {
   High = 'high',
 }
 
+export enum RecurrenceFrequency {
+  Daily = 'daily',
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+}
+
+export interface IRecurrenceRule {
+  frequency: RecurrenceFrequency;
+  dayOfWeek?: number;   // 0=Sun..6=Sat (for weekly)
+  dayOfMonth?: number;  // 1-31 (for monthly)
+}
+
 export interface ITask {
   id: number;
   title: string;
@@ -70,6 +82,9 @@ export interface ITask {
   tags: string[];
   scheduledDate: string | null;  // which day to focus on this task, null = backlog
   position: number;
+  prerequisiteIds: number[];     // IDs of tasks that must be done before this one
+  isBlocked: boolean;            // computed by API: true if any prerequisite is not done
+  recurrenceRule: IRecurrenceRule | null;
   userId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -83,6 +98,7 @@ export interface ICreateTaskRequest {
   dueDate?: string;
   tags?: string[];
   scheduledDate?: string;  // null/omitted = backlog
+  recurrenceRule?: IRecurrenceRule;
 }
 
 export interface IUpdateTaskRequest {
@@ -95,6 +111,8 @@ export interface IUpdateTaskRequest {
   tags?: string[];
   scheduledDate?: string | null;
   position?: number;
+  prerequisiteIds?: number[];
+  recurrenceRule?: IRecurrenceRule | null;
 }
 
 export interface IReorderTasksRequest {

@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { TaskStatus, TaskPriority } from '@app/interfaces';
+import { TaskStatus, TaskPriority, IRecurrenceRule } from '@app/interfaces';
 import { User } from './user.entity';
 
 @Entity('tasks')
@@ -42,6 +42,12 @@ export class Task {
   @Column({ default: 0 })
   position: number;
 
+  @Column({ type: 'simple-json', nullable: true })
+  prerequisiteIds: number[];
+
+  @Column({ type: 'simple-json', nullable: true })
+  recurrenceRule: IRecurrenceRule | null;
+
   @Column()
   userId: number;
 
@@ -54,4 +60,7 @@ export class Task {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  // Computed at query time, not stored
+  isBlocked?: boolean;
 }

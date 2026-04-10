@@ -62,18 +62,113 @@
           </div>
         }
 
+        <!-- Scheduled Date -->
+        <div class="sheet__field sheet__field--row">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="calendarClockIcon" [size]="16"></lucide-icon>
+          </div>
+          <div class="sheet__date-field">
+            <span class="sheet__date-label">Scheduled</span>
+            <input
+              type="date"
+              class="sheet__date-input"
+              [value]="editScheduledDate()"
+              (change)="editScheduledDate.set($any($event.target).value)"
+            />
+          </div>
+        </div>
+
         <!-- Due Date -->
         <div class="sheet__field sheet__field--row">
           <div class="sheet__field-icon">
             <lucide-icon [img]="calendarIcon" [size]="16"></lucide-icon>
           </div>
-          <input
-            type="date"
-            class="sheet__date-input"
-            [value]="editDueDate()"
-            (input)="editDueDate.set($any($event.target).value)"
-          />
+          <div class="sheet__date-field">
+            <span class="sheet__date-label">Due</span>
+            <input
+              type="date"
+              class="sheet__date-input"
+              [value]="editDueDate()"
+              (change)="editDueDate.set($any($event.target).value)"
+            />
+          </div>
         </div>
+
+        <!-- Recurrence -->
+        <div class="sheet__field sheet__field--row">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="repeatIcon" [size]="16" [style.color]="editRecurrenceFrequency() ? 'var(--color-dark-accent-sage)' : ''"></lucide-icon>
+          </div>
+          <button class="sheet__field-btn" (click)="showRecurrencePicker.set(!showRecurrencePicker())">
+            <span [style.color]="editRecurrenceFrequency() ? 'var(--color-dark-accent-sage)' : 'rgba(237, 232, 223, 0.45)'">
+              {{ recurrenceLabel() }}
+            </span>
+            <lucide-icon [img]="chevronDown" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        @if (showRecurrencePicker()) {
+          <div class="sheet__recurrence-picker">
+            <div class="sheet__picker">
+              <button
+                class="sheet__picker-option"
+                [class.sheet__picker-option--active]="editRecurrenceFrequency() === null"
+                (click)="setRecurrenceFrequency(null)"
+              >
+                None
+              </button>
+              <button
+                class="sheet__picker-option"
+                [class.sheet__picker-option--active]="editRecurrenceFrequency() === RecurrenceFrequency.Daily"
+                (click)="setRecurrenceFrequency(RecurrenceFrequency.Daily)"
+              >
+                Daily
+              </button>
+              <button
+                class="sheet__picker-option"
+                [class.sheet__picker-option--active]="editRecurrenceFrequency() === RecurrenceFrequency.Weekly"
+                (click)="setRecurrenceFrequency(RecurrenceFrequency.Weekly)"
+              >
+                Weekly
+              </button>
+              <button
+                class="sheet__picker-option"
+                [class.sheet__picker-option--active]="editRecurrenceFrequency() === RecurrenceFrequency.Monthly"
+                (click)="setRecurrenceFrequency(RecurrenceFrequency.Monthly)"
+              >
+                Monthly
+              </button>
+            </div>
+
+            @if (editRecurrenceFrequency() === RecurrenceFrequency.Weekly) {
+              <div class="sheet__day-picker">
+                @for (day of daysOfWeek; track day.value) {
+                  <button
+                    class="sheet__day-pill"
+                    [class.sheet__day-pill--active]="editRecurrenceDayOfWeek() === day.value"
+                    (click)="editRecurrenceDayOfWeek.set(day.value)"
+                  >
+                    {{ day.label }}
+                  </button>
+                }
+              </div>
+            }
+
+            @if (editRecurrenceFrequency() === RecurrenceFrequency.Monthly) {
+              <div class="sheet__month-picker">
+                <span class="sheet__month-label">Day of month</span>
+                <input
+                  type="number"
+                  class="sheet__month-input"
+                  min="1"
+                  max="31"
+                  [value]="editRecurrenceDayOfMonth()"
+                  (change)="editRecurrenceDayOfMonth.set(+$any($event.target).value)"
+                />
+              </div>
+            }
+          </div>
+        }
 
         <!-- Tags -->
         <div class="sheet__field">
@@ -98,6 +193,54 @@
             />
           </div>
         </div>
+
+        <!-- Prerequisites -->
+        <div class="sheet__field sheet__field--row">
+          <div class="sheet__field-icon">
+            <lucide-icon [img]="lockIcon" [size]="16"></lucide-icon>
+          </div>
+          <button class="sheet__field-btn" (click)="showPrerequisites.set(!showPrerequisites())">
+            <span [style.color]="editPrerequisites().length ? 'var(--color-dark-accent-lavender)' : 'rgba(237, 232, 223, 0.45)'">
+              {{ prereqLabel() }}
+            </span>
+            <lucide-icon [img]="chevronDown" [size]="14"></lucide-icon>
+          </button>
+        </div>
+
+        @if (showPrerequisites()) {
+          <div class="sheet__prereqs" (click)="$event.stopPropagation()">
+            <!-- Current prerequisites -->
+            @for (prereq of editPrerequisites(); track prereq.id) {
+              <span class="sheet__prereq-chip">
+                {{ prereq.title }}
+                <button class="sheet__prereq-remove" (click)="removePrerequisite(prereq.id)">&times;</button>
+              </span>
+            }
+
+            <!-- Search input -->
+            <div class="sheet__prereq-search">
+              <lucide-icon [img]="searchIcon" [size]="14" class="sheet__prereq-search-icon"></lucide-icon>
+              <input
+                type="text"
+                class="sheet__prereq-search-input"
+                placeholder="Search tasks..."
+                [value]="prereqSearchInput()"
+                (input)="onPrereqSearchInput($any($event.target).value)"
+              />
+            </div>
+
+            <!-- Search results -->
+            @if (prereqSearchInput().length >= 2 && filteredSearchResults().length > 0) {
+              <div class="sheet__prereq-results">
+                @for (result of filteredSearchResults(); track result.id) {
+                  <button class="sheet__prereq-result" (click)="addPrerequisite(result)">
+                    {{ result.title }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
       </div>
     </div>
   </div>

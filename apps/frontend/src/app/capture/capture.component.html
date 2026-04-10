@@ -78,6 +78,50 @@
           />
         </div>
 
+        <!-- Repeat -->
+        <div class="capture__field">
+          <label class="capture__field-label">Repeat</label>
+          <div class="capture__priority-pills">
+            @for (opt of recurrenceOptions; track opt.label) {
+              <button
+                class="capture__pill"
+                [class.capture__pill--active]="recurrenceFrequency() === opt.value"
+                (click)="recurrenceFrequency.set(opt.value)"
+              >
+                {{ opt.label }}
+              </button>
+            }
+          </div>
+
+          @if (recurrenceFrequency() === RecurrenceFrequency.Weekly) {
+            <div class="capture__day-pills">
+              @for (day of daysOfWeek; track day.value) {
+                <button
+                  class="capture__day-pill"
+                  [class.capture__day-pill--active]="recurrenceDayOfWeek() === day.value"
+                  (click)="recurrenceDayOfWeek.set(day.value)"
+                >
+                  {{ day.label }}
+                </button>
+              }
+            </div>
+          }
+
+          @if (recurrenceFrequency() === RecurrenceFrequency.Monthly) {
+            <div class="capture__month-pick">
+              <span class="capture__month-label">Day of month</span>
+              <input
+                type="number"
+                class="capture__month-input"
+                min="1"
+                max="31"
+                [value]="recurrenceDayOfMonth()"
+                (change)="recurrenceDayOfMonth.set(+$any($event.target).value)"
+              />
+            </div>
+          }
+        </div>
+
         <!-- Tags -->
         <div class="capture__field">
           <label class="capture__field-label">Tags</label>

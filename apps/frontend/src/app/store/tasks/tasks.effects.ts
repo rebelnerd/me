@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { TasksActions } from './tasks.actions';
 import { TasksApiService } from './tasks.service';
 import { selectSelectedDate } from './tasks.selectors';
@@ -59,8 +59,8 @@ export class TasksEffects {
   captureTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TasksActions.captureTask),
-      exhaustMap(({ title, notes, description, priority, dueDate }) =>
-        this.tasksService.createTask({ title, notes, description, priority, dueDate }).pipe(
+      exhaustMap(({ title, notes, description, priority, dueDate, recurrenceRule }) =>
+        this.tasksService.createTask({ title, notes, description, priority, dueDate, recurrenceRule }).pipe(
           map((task) => TasksActions.captureTaskSuccess({ task })),
           catchError((error) =>
             of(TasksActions.captureTaskFailure({ error: error.error?.message || 'Failed to create task' })),
@@ -84,11 +84,14 @@ export class TasksEffects {
     ),
   );
 
-  completeTaskSuccess$ = createEffect(() =>
+  completeTaskReload$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TasksActions.completeTaskSuccess),
       withLatestFrom(this.store.select(selectSelectedDate)),
-      map(([, date]) => TasksActions.loadFocusTask({ date })),
+      switchMap(([, date]) => [
+        TasksActions.loadFocusTask({ date }),
+        TasksActions.loadDailyTasks({ date }),
+      ]),
     ),
   );
 
@@ -103,6 +106,18 @@ export class TasksEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  updateTaskSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TasksActions.updateTaskSuccess),
+      withLatestFrom(this.store.select(selectSelectedDate)),
+      switchMap(([, date]) => [
+        TasksActions.loadDailyTasks({ date }),
+        TasksActions.loadBacklog({}),
+        TasksActions.loadFocusTask({ date }),
+      ]),
     ),
   );
 
@@ -184,6 +199,14 @@ export class TasksEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  reorderTasksReloadFocus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TasksActions.reorderTasksSuccess),
+      withLatestFrom(this.store.select(selectSelectedDate)),
+      map(([, date]) => TasksActions.loadFocusTask({ date })),
     ),
   );
 }

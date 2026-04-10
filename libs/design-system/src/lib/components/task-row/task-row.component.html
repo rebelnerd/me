@@ -2,26 +2,36 @@
   <div
     class="task-row"
     [class.task-row--done]="done()"
+    [class.task-row--blocked]="blocked()"
     (click)="tapped.emit()"
   >
     <button
       class="task-row__check"
       [class.task-row__check--checked]="done()"
+      [class.task-row__check--blocked]="blocked()"
       (click)="$event.stopPropagation(); toggled.emit()"
-      [attr.aria-label]="done() ? 'Mark as todo' : 'Mark as done'"
+      [attr.aria-label]="done() ? 'Mark as todo' : blocked() ? 'Blocked by prerequisite' : 'Mark as done'"
     >
       @if (done()) {
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="display:block">
           <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+      } @else if (blocked()) {
+        <lucide-icon [img]="lockIcon" [size]="10"></lucide-icon>
       }
     </button>
 
     <div class="task-row__body">
       <span class="task-row__title">{{ title() }}</span>
 
-      @if (priority() !== 'none' || dueDateDisplay || hasTags()) {
+      @if (priority() !== 'none' || dueDateDisplay || hasTags() || blocked() || recurring()) {
         <div class="task-row__meta">
+          @if (blocked()) {
+            <span class="task-row__blocked-label">Waiting</span>
+          }
+          @if (recurring()) {
+            <lucide-icon [img]="repeatIcon" [size]="11" class="task-row__recurring-icon"></lucide-icon>
+          }
           @if (priority() !== 'none') {
             <span class="task-row__priority task-row__priority--{{ priority() }}"></span>
           }

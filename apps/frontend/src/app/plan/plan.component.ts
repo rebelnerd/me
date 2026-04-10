@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CdkDropList, CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TaskRowComponent, IconButtonComponent, TaskDetailSheetComponent, TaskDetailData, ToastService } from '@app/design-system';
+import { TaskRowComponent, IconButtonComponent, TaskDetailSheetComponent, TaskDetailData, PrerequisiteRef, ToastService } from '@app/design-system';
 import { TasksActions } from '../store/tasks/tasks.actions';
+import { TasksApiService } from '../store/tasks/tasks.service';
 import {
   selectTasks,
   selectBacklog,
@@ -13,6 +14,7 @@ import {
   selectDoneTasks,
   selectSelectedDate,
   selectTasksLoading,
+  selectAllTasksMap,
 } from '../store/tasks/tasks.selectors';
 import { TaskStatus, ITask, TaskPriority } from '@app/interfaces';
 import { ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-angular';
@@ -29,6 +31,7 @@ export class PlanComponent implements OnInit {
   private store = inject(Store);
   private router = inject(Router);
   private toast = inject(ToastService);
+  private tasksApi = inject(TasksApiService);
 
   tasks = toSignal(this.store.select(selectTasks), { initialValue: [] });
   backlog = toSignal(this.store.select(selectBacklog), { initialValue: [] });
@@ -36,6 +39,7 @@ export class PlanComponent implements OnInit {
   doneTasks = toSignal(this.store.select(selectDoneTasks), { initialValue: [] });
   selectedDate = toSignal(this.store.select(selectSelectedDate), { initialValue: '' });
   loading = toSignal(this.store.select(selectTasksLoading), { initialValue: false });
+  allTasksMap = toSignal(this.store.select(selectAllTasksMap), { initialValue: new Map() });
 
   chevronLeftIcon = ChevronLeft;
   chevronRightIcon = ChevronRight;
@@ -47,6 +51,7 @@ export class PlanComponent implements OnInit {
   // Detail sheet state
   detailOpen = signal(false);
   selectedTask = signal<ITask | null>(null);
+  prereqSearchResults = signal<PrerequisiteRef[]>([]);
 
   displayDate = computed(() => {
     const date = this.selectedDate();
@@ -101,6 +106,26 @@ export class PlanComponent implements OnInit {
     this.detailOpen.set(true);
   }
 
+  getPrerequisiteRefs(task: ITask): PrerequisiteRef[] {
+    if (!task.prerequisiteIds?.length) return [];
+    const map = this.allTasksMap();
+    return task.prerequisiteIds
+      .map((id) => {
+        const t = map.get(id);
+        return t ? { id: t.id, title: t.title } : null;
+      })
+      .filter((r): r is PrerequisiteRef => r !== null);
+  }
+
+  onPrereqSearch(query: string) {
+    const task = this.selectedTask();
+    this.tasksApi.searchTasks(query, task?.id).subscribe((results) => {
+      this.prereqSearchResults.set(
+        results.map((t) => ({ id: t.id, title: t.title })),
+      );
+    });
+  }
+
   onDetailSaved(data: TaskDetailData) {
     const task = this.selectedTask();
     if (!task) return;
@@ -111,7 +136,10 @@ export class PlanComponent implements OnInit {
         description: data.description ?? undefined,
         priority: data.priority as TaskPriority,
         dueDate: data.dueDate,
+        scheduledDate: data.scheduledDate,
         tags: data.tags,
+        prerequisiteIds: data.prerequisiteIds,
+        recurrenceRule: data.recurrenceRule,
       },
     }));
   }
@@ -119,6 +147,7 @@ export class PlanComponent implements OnInit {
   onDetailClosed() {
     this.detailOpen.set(false);
     this.selectedTask.set(null);
+    this.prereqSearchResults.set([]);
   }
 
   scheduleTask(task: ITask) {

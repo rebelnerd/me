@@ -27,4 +27,4 @@ export { TaskRowComponent } from './lib/components/task-row/task-row.component';
 export { MeditationBgComponent } from './lib/components/meditation-bg/meditation-bg.component';
 export type { MeditationScene } from './lib/components/meditation-bg/meditation-bg.component';
 export { TaskDetailSheetComponent } from './lib/components/task-detail-sheet/task-detail-sheet.component';
-export type { TaskDetailData } from './lib/components/task-detail-sheet/task-detail-sheet.component';
+export type { TaskDetailData, PrerequisiteRef } from './lib/components/task-detail-sheet/task-detail-sheet.component';
