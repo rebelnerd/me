@@ -118,3 +118,23 @@ export interface IUpdateTaskRequest {
 export interface IReorderTasksRequest {
   taskIds: number[];
 }
+
+// Voice Capture interfaces
+export enum VoiceCaptureStatus {
+  Idle = 'idle',
+  Recording = 'recording',
+  Processing = 'processing',
+  Success = 'success',
+  Error = 'error',
+}
+
+export interface IVoiceCaptureRequest {
+  audioBase64: string;
+  mimeType: string;
+  durationMs: number;
+}
+
+export interface IVoiceCaptureResponse {
+  task: ITask;
+  transcription: string;
+}

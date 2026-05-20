@@ -1,4 +1,4 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { ITask, IUpdateTaskRequest, IRecurrenceRule, TaskPriority } from '@app/interfaces';
 
 export const TasksActions = createActionGroup({
@@ -49,5 +49,11 @@ export const TasksActions = createActionGroup({
     ReorderTasksFailure: props<{ error: string }>(),
 
     SetSelectedDate: props<{ date: string }>(),
+
+    // Voice capture
+    VoiceCapture: props<{ audioBase64: string; mimeType: string; durationMs: number }>(),
+    VoiceCaptureSuccess: props<{ task: ITask; transcription: string }>(),
+    VoiceCaptureFailure: props<{ error: string }>(),
+    VoiceCaptureReset: emptyProps(),
   },
 });

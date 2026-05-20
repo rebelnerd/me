@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { TasksActions } from './tasks.actions';
 import { TasksApiService } from './tasks.service';
+import { VoiceCaptureApiService } from '../../shared/services/voice-capture-api.service';
 import { selectSelectedDate } from './tasks.selectors';
 import { TaskStatus } from '@app/interfaces';
 
@@ -12,6 +13,7 @@ import { TaskStatus } from '@app/interfaces';
 export class TasksEffects {
   private actions$ = inject(Actions);
   private tasksService = inject(TasksApiService);
+  private voiceCaptureService = inject(VoiceCaptureApiService);
   private store = inject(Store);
 
   loadDailyTasks$ = createEffect(() =>
@@ -207,6 +209,40 @@ export class TasksEffects {
       ofType(TasksActions.reorderTasksSuccess),
       withLatestFrom(this.store.select(selectSelectedDate)),
       map(([, date]) => TasksActions.loadFocusTask({ date })),
+    ),
+  );
+
+  // Voice capture
+  voiceCapture$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TasksActions.voiceCapture),
+      exhaustMap(({ audioBase64, mimeType, durationMs }) => {
+        console.log('[VoiceCaptureEffect] Received action, calling API...');
+        return this.voiceCaptureService.capture({ audioBase64, mimeType, durationMs }).pipe(
+          map((response) => {
+            console.log('[VoiceCaptureEffect] Success:', response);
+            return TasksActions.voiceCaptureSuccess({
+              task: response.task,
+              transcription: response.transcription,
+            });
+          }),
+          catchError((error) => {
+            console.error('[VoiceCaptureEffect] Error:', error);
+            return of(
+              TasksActions.voiceCaptureFailure({
+                error: error.error?.message || 'Voice capture failed',
+              }),
+            );
+          }),
+        );
+      }),
+    ),
+  );
+
+  voiceCaptureSuccessReload$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TasksActions.voiceCaptureSuccess),
+      map(() => TasksActions.loadBacklog({})),
     ),
   );
 }

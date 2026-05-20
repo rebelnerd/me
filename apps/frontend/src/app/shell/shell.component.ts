@@ -1,21 +1,32 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs/operators';
 import { BottomNavComponent, NavItem, MeditationBgComponent, MeditationScene } from '@app/design-system';
-import { Target, PlusCircle, Calendar } from 'lucide-angular';
+import { LucideAngularModule, Target, PlusCircle, Calendar, Mic } from 'lucide-angular';
 import { AccountMenuComponent } from './account-menu/account-menu.component';
+import { VoiceCaptureModalComponent } from '../shared/components/voice-capture-modal/voice-capture-modal.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, BottomNavComponent, MeditationBgComponent, AccountMenuComponent],
+  imports: [
+    RouterOutlet,
+    BottomNavComponent,
+    MeditationBgComponent,
+    AccountMenuComponent,
+    LucideAngularModule,
+    VoiceCaptureModalComponent,
+  ],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
   host: { class: 'theme-dark' },
 })
 export class ShellComponent {
   private router = inject(Router);
+
+  showVoiceCapture = signal(false);
+  readonly micIcon = Mic;
 
   private currentUrl = toSignal(
     this.router.events.pipe(
@@ -43,5 +54,13 @@ export class ShellComponent {
 
   onNavigate(route: string) {
     this.router.navigate([route]);
+  }
+
+  openVoiceCapture() {
+    this.showVoiceCapture.set(true);
+  }
+
+  closeVoiceCapture() {
+    this.showVoiceCapture.set(false);
   }
 }

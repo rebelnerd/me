@@ -63,3 +63,14 @@ export const selectAllTasksMap = createSelector(
     return map;
   },
 );
+
+// Voice capture selectors
+export const selectVoiceCaptureStatus = createSelector(
+  selectTasksState,
+  (state) => state.voiceCaptureStatus,
+);
+
+export const selectLastTranscription = createSelector(
+  selectTasksState,
+  (state) => state.lastTranscription,
+);

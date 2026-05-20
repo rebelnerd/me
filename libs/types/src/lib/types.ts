@@ -26,6 +26,12 @@ export interface IBackendConfig {
   cors: {
     origins: string[];
   };
+  assemblyAi?: {
+    apiKey: string;
+  };
+  claude?: {
+    apiKey: string;
+  };
 }
 
 export interface IFrontendConfig {

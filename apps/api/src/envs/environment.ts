@@ -14,7 +14,8 @@ export const environment: IBackendConfig = {
   },
   jwt: {
     secret: process.env.JWT_SECRET || 'dev-jwt-secret-change-me',
-    refreshSecret: process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-change-me',
+    refreshSecret:
+      process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-change-me',
     xsrfSecret: process.env.JWT_XSRF_SECRET || 'dev-xsrf-secret-change-me',
     accessExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',
     refreshExpiry: process.env.JWT_REFRESH_EXPIRY || '1d',
@@ -23,5 +24,11 @@ export const environment: IBackendConfig = {
   },
   cors: {
     origins: (process.env.CORS_ORIGINS || 'http://localhost:4200').split(','),
+  },
+  assemblyAi: {
+    apiKey: process.env.ASSEMBLYAI_API_KEY || '',
+  },
+  claude: {
+    apiKey: process.env.CLAUDE_API_KEY || '',
   },
 };

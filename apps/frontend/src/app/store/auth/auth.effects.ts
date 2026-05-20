@@ -65,20 +65,22 @@ export class AuthEffects implements OnInitEffects {
       ofType(AuthActions.signup),
       exhaustMap(({ email, password, firstName, lastName }) =>
         this.authService.signup({ email, password, firstName, lastName }).pipe(
-          map((response) => {
-            localStorage.setItem('authToken', response.tokens.accessToken);
-            return AuthActions.signupSuccess({
-              user: response.user,
-              accessToken: response.tokens.accessToken,
-              xsrfToken: response.tokens.xsrfToken,
-            });
-          }),
+          map(() => AuthActions.signupSuccess()),
           catchError((error) =>
             of(AuthActions.signupFailure({ error: error.error?.message || 'Signup failed' })),
           ),
         ),
       ),
     ),
+  );
+
+  signupSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.signupSuccess),
+        tap(() => this.router.navigate(['/auth/login'])),
+      ),
+    { dispatch: false },
   );
 
   logout$ = createEffect(() =>

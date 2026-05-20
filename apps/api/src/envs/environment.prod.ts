@@ -24,4 +24,10 @@ export const environment: IBackendConfig = {
   cors: {
     origins: (process.env.CORS_ORIGINS || 'https://yourapp.com').split(','),
   },
+  assemblyAi: {
+    apiKey: process.env.ASSEMBLYAI_API_KEY || '',
+  },
+  claude: {
+    apiKey: process.env.CLAUDE_API_KEY || '',
+  },
 };
