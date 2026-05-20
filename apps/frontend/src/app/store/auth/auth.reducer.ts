@@ -36,13 +36,8 @@ export const authReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(AuthActions.signupSuccess, (state, { user, accessToken, xsrfToken }) => ({
+  on(AuthActions.signupSuccess, (state) => ({
     ...state,
-    initialized: true,
-    isAuthenticated: true,
-    user,
-    token: accessToken,
-    xsrfToken,
     loading: false,
     error: null,
   })),

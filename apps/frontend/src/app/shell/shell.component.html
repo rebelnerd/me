@@ -15,4 +15,14 @@
       <app-account-menu />
     </div>
   </div>
+
+  <!-- Voice Capture FAB -->
+  <button class="voice-fab" (click)="openVoiceCapture()" aria-label="Voice capture">
+    <lucide-icon [img]="micIcon" [size]="24"></lucide-icon>
+  </button>
+
+  <!-- Voice Capture Modal -->
+  @if (showVoiceCapture()) {
+    <app-voice-capture-modal (closed)="closeVoiceCapture()" />
+  }
 </div>

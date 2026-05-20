@@ -1,4 +1,4 @@
-import { ITask } from '@app/interfaces';
+import { ITask, VoiceCaptureStatus } from '@app/interfaces';
 
 export interface TasksState {
   tasks: ITask[];           // today's scheduled tasks
@@ -8,6 +8,8 @@ export interface TasksState {
   loading: boolean;
   capturing: boolean;
   error: string | null;
+  voiceCaptureStatus: VoiceCaptureStatus;
+  lastTranscription: string | null;
 }
 
 export const initialTasksState: TasksState = {
@@ -18,4 +20,6 @@ export const initialTasksState: TasksState = {
   loading: false,
   capturing: false,
   error: null,
+  voiceCaptureStatus: VoiceCaptureStatus.Idle,
+  lastTranscription: null,
 };

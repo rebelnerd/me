@@ -6,6 +6,7 @@ import { typeOrmConfig } from './typeorm.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { TaskModule } from './modules/task/task.module';
+import { VoiceCaptureModule } from './modules/voice-capture/voice-capture.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from './modules/auth/guards/roles.guard';
 
@@ -16,6 +17,7 @@ import { RolesGuard } from './modules/auth/guards/roles.guard';
     AuthModule,
     UserModule,
     TaskModule,
+    VoiceCaptureModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

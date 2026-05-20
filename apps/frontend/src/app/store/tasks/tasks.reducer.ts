@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { TasksActions } from './tasks.actions';
 import { TasksState, initialTasksState } from './tasks.state';
-import { TaskStatus } from '@app/interfaces';
+import { TaskStatus, VoiceCaptureStatus } from '@app/interfaces';
 
 export const tasksReducer = createReducer(
   initialTasksState,
@@ -128,5 +128,29 @@ export const tasksReducer = createReducer(
   on(TasksActions.setSelectedDate, (state, { date }) => ({
     ...state,
     selectedDate: date,
+  })),
+
+  // Voice capture
+  on(TasksActions.voiceCapture, (state) => ({
+    ...state,
+    voiceCaptureStatus: VoiceCaptureStatus.Processing,
+    error: null,
+  })),
+  on(TasksActions.voiceCaptureSuccess, (state, { task, transcription }) => ({
+    ...state,
+    backlog: [task, ...state.backlog],
+    voiceCaptureStatus: VoiceCaptureStatus.Success,
+    lastTranscription: transcription,
+  })),
+  on(TasksActions.voiceCaptureFailure, (state, { error }) => ({
+    ...state,
+    voiceCaptureStatus: VoiceCaptureStatus.Error,
+    error,
+  })),
+  on(TasksActions.voiceCaptureReset, (state) => ({
+    ...state,
+    voiceCaptureStatus: VoiceCaptureStatus.Idle,
+    lastTranscription: null,
+    error: null,
   })),
 );

@@ -1,0 +1,69 @@
+<ds-modal [open]="isOpen()" (closed)="close()" title="Voice Capture" size="sm">
+  <div class="voice-capture">
+    @if (displayError()) {
+      <div class="voice-capture__error">{{ displayError() }}</div>
+    }
+
+    @switch (voiceCaptureStatus()) {
+      @case (VoiceCaptureStatus.Processing) {
+        <div class="voice-capture__processing">
+          <div class="voice-capture__spinner"></div>
+          <p class="voice-capture__status">Processing your memo...</p>
+          <p class="voice-capture__substatus">Transcribing and creating task</p>
+        </div>
+      }
+      @case (VoiceCaptureStatus.Success) {
+        <div class="voice-capture__success">
+          <div class="voice-capture__check">
+            <lucide-icon [img]="checkIcon" [size]="32"></lucide-icon>
+          </div>
+          <p class="voice-capture__status">Task created!</p>
+          <ds-button variant="primary" (clicked)="close()">Done</ds-button>
+        </div>
+      }
+      @case (VoiceCaptureStatus.Error) {
+        <div class="voice-capture__error-state">
+          <p class="voice-capture__status">Something went wrong</p>
+          <ds-button variant="primary" (clicked)="startRecording()">Try Again</ds-button>
+          <ds-button variant="ghost" (clicked)="close()">Close</ds-button>
+        </div>
+      }
+      @default {
+        @if (audioService.isRecording()) {
+          <div class="voice-capture__recording">
+            <!-- Waveform visualization -->
+            <div class="voice-capture__waveform" [style.--audio-level]="audioService.audioLevel()">
+              @for (bar of waveformBars; track bar) {
+                <div
+                  class="voice-capture__waveform-bar"
+                  [style.animation-delay.ms]="bar * 80"
+                ></div>
+              }
+            </div>
+            <p class="voice-capture__duration">{{ formattedDuration() }}</p>
+            <p class="voice-capture__hint">Recording...</p>
+          </div>
+          <div class="voice-capture__actions">
+            <ds-button variant="primary" size="lg" (clicked)="stopAndProcess()">
+              <lucide-icon [img]="stopIcon" [size]="18"></lucide-icon>
+              Stop & Process
+            </ds-button>
+            <ds-button variant="ghost" (clicked)="cancel()">Cancel</ds-button>
+          </div>
+        } @else if (isStarting()) {
+          <div class="voice-capture__starting">
+            <div class="voice-capture__spinner"></div>
+            <p class="voice-capture__status">Starting microphone...</p>
+          </div>
+        } @else {
+          <div class="voice-capture__idle">
+            <button class="voice-capture__record-btn" (click)="startRecording()">
+              <lucide-icon [img]="micIcon" [size]="32"></lucide-icon>
+            </button>
+            <p class="voice-capture__hint">Tap to start recording</p>
+          </div>
+        }
+      }
+    }
+  </div>
+</ds-modal>

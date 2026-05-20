@@ -9,7 +9,7 @@ export const AuthActions = createActionGroup({
     LoginFailure: props<{ error: string; code?: string }>(),
 
     Signup: props<ISignupRequest>(),
-    SignupSuccess: props<{ user: IUser; accessToken: string; xsrfToken: string }>(),
+    SignupSuccess: emptyProps(),
     SignupFailure: props<{ error: string }>(),
 
     Logout: emptyProps(),

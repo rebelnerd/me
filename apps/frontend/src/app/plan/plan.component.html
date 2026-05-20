@@ -119,6 +119,9 @@
                   </div>
                 }
               </div>
+              <button class="plan__delete-btn" (click)="onTaskDelete(task)" title="Delete task">
+                <lucide-icon [img]="trashIcon" [size]="14"></lucide-icon>
+              </button>
             </div>
           }
         }

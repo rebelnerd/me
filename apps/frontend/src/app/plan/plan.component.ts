@@ -17,7 +17,7 @@ import {
   selectAllTasksMap,
 } from '../store/tasks/tasks.selectors';
 import { TaskStatus, ITask, TaskPriority } from '@app/interfaces';
-import { ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-angular';
+import { ChevronLeft, ChevronRight, Plus, Minus, Trash2 } from 'lucide-angular';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -45,6 +45,7 @@ export class PlanComponent implements OnInit {
   chevronRightIcon = ChevronRight;
   plusIcon = Plus;
   minusIcon = Minus;
+  trashIcon = Trash2;
 
   showBacklog = signal(false);
 
